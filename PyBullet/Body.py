@@ -2,7 +2,7 @@ from .Vector import Vector,Force
 
 
 class Body:
-	DEBUG=True
+	DEBUG=False
 	Obj_id=0
 	def __init__(self,mass,charge=0,init_vel=Vector(0,0),enab_colli=False,loc=Vector(0,0),theta=0,isPoint=True):
 		self.id="body"+str(Body.Obj_id)

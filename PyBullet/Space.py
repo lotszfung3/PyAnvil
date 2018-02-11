@@ -5,14 +5,13 @@ class Space:
 	'''
 	The whole world
 	'''
-	def __init__(self,bodyList=[],gravt=Force(0,0,"gravity"),delta_time=50):
+	def __init__(self,bodyList=[],gravt=Force(0,10,"gravity"),delta_time=50):
 		self.bodyList=bodyList
 		self.gravt=gravt
 		self.delta_time=delta_time
 	def __str__(self):
-		bodyStr="Bodies:\n"+"\n".join(str(self.bodyList)) if len(self.bodyList)>0 else "No objects"
-		gravtStr="Gravitation:\n"+str(self.gravt)
-		return bodyStr+"\n"+gravtStr
+		bodyStr="Bodies:\n"+"\n".join(str(x) for x in self.bodyList) if len(self.bodyList)>0 else "No objects"
+		return bodyStr
 	def compute_force(self,rate):
 		for body in self.bodyList:
 			body.update_state(rate)
@@ -33,10 +32,10 @@ class Space:
 	def add_body(self,bodies):
 		if(isinstance (bodies,list)):
 			for b in bodies:
-				b.add_force(self.gravt)
+				b.add_force(self.gravt*b.mass)
 				self.bodyList.append(b)
 		else:
-			bodies.add_force(self.gravt)
+			bodies.add_force(self.gravt*bodies.mass)
 			self.bodyList.append(bodies)
 
 
