@@ -4,7 +4,7 @@ A wiki may be added later when the features are more well developed.
 
 There are mainly 2 components, the physics engine and simple GUI used to show the movement.
 
-Steps to quick start:
+# Steps to quick start:
 1. import stuff
 ```
 from PyBullet import Space,Body,Application,Vector
@@ -24,18 +24,18 @@ app=Application(space)
 app.start()
 ```
 
-Features have developed:
-Gravitation
-Point body
-GUI that can only draw circle body
+## Features have developed:
+- Gravitation
+- Point body
+- GUI that can only draw circle body
 
-Features to be implemented:
-The Graphics matching each features
-Constant Force(Link) between 2 objects
-Attractive/Repulsive Force among objects
-Body with area (rectangle, circle)
-A fixed body in the space (ground)
-Collision among body
-Friction(air resistance/ friction on floor)
-Rotating movement
-Joint/Hinge
+## Features to be implemented:
+- The Graphics matching each features
+- Constant Force(Link) between 2 objects
+- Attractive/Repulsive Force among objects
+- Body with area (rectangle, circle)
+- A fixed body in the space (ground)
+- Collision among body
+- Friction(air resistance/ friction on floor)
+- Rotating movement
+- Joint/Hinge
