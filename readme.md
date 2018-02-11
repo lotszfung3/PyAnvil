@@ -15,7 +15,7 @@ space=Space()
 ```
 3. create body and add to the space
 ```
-body=Body(mass=10,init_vel=Vector(50,-50),loc=Vector(0,200))
+body=MovingBody(mass=10,init_vel=Vector(50,-50),loc=Vector(0,200))
 space.add_body(body)
 ```
 4. create gui application and start
@@ -33,7 +33,7 @@ Features to be implemented:
 The Graphics matching each features
 Constant Force(Link) between 2 objects
 Attractive/Repulsive Force among objects
-Body with area (rectangle, circle)
+MovingBody with area (rectangle, circle)
 A fixed body in the space (ground)
 Collision among body
 Friction(air resistance/ friction on floor)

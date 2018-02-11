@@ -20,8 +20,7 @@ class Application():
 		
 	def setup_shape(self):
 		for body in self.space.bodyList:
-			bodyCenter=body.loc #(x,y)
-			self.objList.append(self.canvas.create_oval(bodyCenter.x+5,bodyCenter.y+5,bodyCenter.x+15,bodyCenter.x+15))
+			self.objList.append(self.canvas.create_oval(*AppUtil.getcoordFromMovingBody(body)))
 	
 	def start(self):
 		self.root.mainloop()
@@ -34,8 +33,7 @@ class Application():
 		for i,body in enumerate(self.space.bodyList):
 			bodyCenter=body.loc
 			print(bodyCenter)
-			self.canvas.coords(self.objList[i],bodyCenter.x+5,bodyCenter.y+5,bodyCenter.x+15,bodyCenter.y+15)
-		
+			self.canvas.coords(self.objList[i],*AppUtil.getcoordFromMovingBody(body))
 	def updater(self):
 		self.update_state()
 		self.canvas.after(UPDATE_RATE, self.updater)
@@ -43,3 +41,12 @@ class Application():
 app=Application(space)
 app.start()
 '''
+class AppUtil():
+	def getcoordFromMovingBody(body):
+		'''
+		return: a 4-tuple of the bound of the body accepted 
+		        by canvas.create_oval including offset
+		'''
+		bodyCenter=body.loc
+		r=body.radius
+		return (bodyCenter.x+r,bodyCenter.y+r,bodyCenter.x+r+10,bodyCenter.y+r+10)

@@ -1,4 +1,4 @@
-from .Body import Body
+from .Body import MovingBody
 from .Vector import Vector,Force
 from time import sleep
 class Space:

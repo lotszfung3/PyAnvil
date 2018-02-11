@@ -1,22 +1,31 @@
 from .Vector import Vector,Force
 
-
 class Body:
+	'''
+	Wall,ground
+	'''
+	def __init__(self,loc,dim):
+		self.loc=loc
+		self.dim=dim
+	def __str__(self):
+		return "I am a wall"
+class MovingBody(Body):
 	DEBUG=False
 	Obj_id=0
 	def __init__(self,mass,charge=0,init_vel=Vector(0,0),enab_colli=False,loc=Vector(0,0),theta=0,isPoint=True):
-		self.id="body"+str(Body.Obj_id)
-		Body.Obj_id+=1
+		super().__init__(loc,Vector(0,0))
+		self.id="body"+str(MovingBody.Obj_id)
+		MovingBody.Obj_id+=1
 		self.mass=mass
 		self.charge=charge
 		self.enabled_collision=enab_colli
-		self.loc=loc
 		self._forces=[]#forces to be computed every step
 		self.acceleration=Vector(0,0)
 		self.velocity=init_vel
+		self.radius=5
 
 	def __str__(self):
-		if not Body.DEBUG:
+		if not MovingBody.DEBUG:
 			return str(self.id)+" "+str(self.loc)
 		else:
 			return str(self.id)+" "+str(self.loc)+", ".join(str(x) for x in self._forces)
@@ -32,6 +41,3 @@ class Body:
 		self.velocity+=self.acceleration * delta_time / 1000
 		self.loc+=self.velocity* delta_time /1000
 		#print(self.loc)
-
-
-

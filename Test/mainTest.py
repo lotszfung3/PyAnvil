@@ -1,6 +1,6 @@
 import unittest
-from PyBullet import Space,Body
-class TestBodyVariable(unittest.TestCase):
+from PyAnvil import Space,Body
+class TestMovingBodyVariable(unittest.TestCase):
 	def setUp(self):
 		self.space=Space()
 	def test_basic(self):
