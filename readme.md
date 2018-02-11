@@ -1,6 +1,6 @@
-A programming project aims to develop a 2D physics engine from scratch and features by features using Python with the aims to train skills on OOP, organized project structures and possibly physics knowledge.
+A programming project aims to develop a 2D physics engine from scratch and features by features using Python with the aims to train skills on OOP, software development and possibly physics knowledge.
 
-A wiki may be added later when the features are more well developed.
+A wiki page  may be added later when the features are more well developed.
 
 There are mainly 2 components, the physics engine and simple GUI used to show the movement.
 
