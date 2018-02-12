@@ -5,15 +5,20 @@ class Body:
 	Wall,ground
 	'''
 	def __init__(self,loc,dim):
-		self.loc=loc
-		self.dim=dim
+		self.loc=Vector(loc)
+		self.dim=Vector(dim)
+		self.movable=False
 	def __str__(self):
-		return "I am a wall"
+		return "Fixed"
+	def add_force(self,*args):
+		raise Exception("Wall should have no force")
+	def update_state(self,*args):
+		raise Exception("It state won't change")
 class MovingBody(Body):
 	DEBUG=False
 	Obj_id=0
-	def __init__(self,mass,charge=0,init_vel=Vector(0,0),enab_colli=False,loc=Vector(0,0),theta=0,isPoint=True):
-		super().__init__(loc,Vector(0,0))
+	def __init__(self,mass,charge=0,init_vel=(0,0),enab_colli=False,loc=(0,0),theta=0,isPoint=True):
+		super().__init__(loc,(5,5))
 		self.id="body"+str(MovingBody.Obj_id)
 		MovingBody.Obj_id+=1
 		self.mass=mass
@@ -21,8 +26,8 @@ class MovingBody(Body):
 		self.enabled_collision=enab_colli
 		self._forces=[]#forces to be computed every step
 		self.acceleration=Vector(0,0)
-		self.velocity=init_vel
-		self.radius=5
+		self.velocity=Vector(init_vel)
+		self.movable=True
 
 	def __str__(self):
 		if not MovingBody.DEBUG:
