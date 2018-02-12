@@ -29,11 +29,12 @@ app.start()
 - Point body
 - GUI that can only draw circle body
 - Collide with wall (need to change how velocity is changed)
+- Constant Force(Link) between 2 objects
+- Attractive/Repulsive Force among objects
 
 ## Features to be implemented:
 - The Graphics matching each features
-- Constant Force(Link) between 2 objects
-- Attractive/Repulsive Force among objects
+
 - Body with area (rectangle, circle)
 - A fixed body in the space (ground)
 - Collision among body
