@@ -34,11 +34,11 @@ app.start()
 
 ## Features to be implemented:
 - The Graphics matching each features
-
 - Body with area (rectangle, circle)
 - A fixed body in the space (ground)
 - Collision among body
 - Friction(air resistance/ friction on floor)
 - Rotating movement
 - Joint/Hinge
+- String(extensible/rigid)
 
