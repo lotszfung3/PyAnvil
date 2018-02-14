@@ -5,9 +5,14 @@ A wiki page  may be added later when the features are more well developed.
 There are mainly 2 components, the physics engine and simple GUI used to show the movement.
 
 # Steps to quick start:
-1. import stuff
+1. clone this repo
 ```
-from PyBullet import Space,Body,Application,Vector
+git clone https://github.com/lotszfung3/PyAnvil.git
+cd PyAnvil
+```
+2. open main.py and import stuff
+```
+from PyAnvil import Space,Body,Application,Vector
 ```
 2. create the space
 ```
