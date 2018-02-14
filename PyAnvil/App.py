@@ -1,7 +1,10 @@
 import tkinter as tk
+import numpy as np
 from .Space import Space
+
+
 UPDATE_RATE = 50
-MARGIN=10 #offsets in the gui
+MARGIN=0 #offsets in the gui
 class Application():
 	def __init__(self,space:Space):
 		self.space=space
@@ -15,7 +18,7 @@ class Application():
 	def setup_tk(self):
 		self.root=tk.Tk()
 		self.root.title("Space")
-		self.canvas=tk.Canvas(self.root,width=500,height=500)
+		self.canvas=tk.Canvas(self.root,width=1000,height=800)
 		self.canvas.pack()
 		
 	def setup_shape(self):
@@ -49,19 +52,31 @@ app.start()
 class AppUtil():
 	def createShapeFromBody(canvas,body):
 		if(str(body)=="Fixed"):
-			return canvas.create_rectangle(*AppUtil.getcoordFromBody(body))
+			return canvas.create_polygon(*AppUtil.getcoordFromBody(body))
 		else:#moving bodies
-			return canvas.create_oval(*AppUtil.getcoordFromBody(body))
+			return canvas.create_oval(*AppUtil.getcoordFromBody(body), fill='red')
 	
 	def getcoordFromBody(body):
 		'''
-		return: a 4-tuple of the bound of the body accepted 
-		        by canvas.create_oval including offset
+		return: a 8-tuple of the bound of the body accepted 
+		        by canvas.create_polygon including offset to represent 4
+				corners of the rectangle
 		'''
-		bodyCenter=body.loc
+		bodyCenter=np.array((body.loc.x, body.loc.y))
 		bodyDim=body.dim
-		return (bodyCenter.x-bodyDim.x+MARGIN,bodyCenter.y-bodyDim.y+MARGIN,
-				bodyCenter.x+bodyDim.x+MARGIN,bodyCenter.y+bodyDim.y+MARGIN)
+		theta = body.rotate/180 * np.pi
+		sin, cos = np.sin, np.cos
+		rotMat = np.array([[cos(theta), -sin(theta)],[sin(theta),cos(theta)]])
+
+		ul_x, ul_y = rotMat.dot(np.array([-bodyDim.x/2+MARGIN, -bodyDim.y/2+MARGIN])) + bodyCenter
+		ur_x, ur_y = rotMat.dot(np.array([bodyDim.x/2+MARGIN, -bodyDim.y/2+MARGIN])) + bodyCenter
+		bl_x, bl_y = rotMat.dot(np.array([-bodyDim.x/2+MARGIN, bodyDim.y/2+MARGIN])) + bodyCenter
+		br_x, br_y = rotMat.dot(np.array([bodyDim.x/2+MARGIN, bodyDim.y/2+MARGIN])) + bodyCenter
+		if str(body)=="Fixed":
+			return (ul_x,ul_y,ur_x,ur_y, br_x, br_y, bl_x, bl_y)
+		else:
+			return (ul_x,ul_y, br_x, br_y)
+		
 	def createLineFromBody(canvas,link):
 		return canvas.create_line(*AppUtil.getcoordFromLink(link))
 	def getcoordFromLink(link):

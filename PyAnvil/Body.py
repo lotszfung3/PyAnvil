@@ -4,10 +4,14 @@ class Body:
 	'''
 	Wall,ground
 	'''
-	def __init__(self,loc,dim):
+	def __init__(self,loc,dim,rotate=0):
 		self.loc=Vector(loc)
 		self.dim=Vector(dim)
 		self.movable=False
+		
+		# Counter-clockwise rotation theta in degree
+		self.rotate= -rotate
+		
 	def __str__(self):
 		return "Fixed"
 	def update_force(self,*args):
@@ -18,11 +22,11 @@ class MovingBody(Body):
 	DEBUG=False
 	Obj_id=0
 	def __init__(self,mass,charge=0,init_vel=(0,0),enab_colli=False,loc=(0,0),theta=0,isPoint=True,id=None):
-		super().__init__(loc,(5,5))
+		super().__init__(loc,(10,10))
 		self.mass=mass
 		self.charge=charge
 		self.enabled_collision=enab_colli
-		self._forces=[]#forces to be computed every step
+		self._forces={}#forces to be computed every step
 		self.acceleration=Vector(0,0)
 		self.velocity=Vector(init_vel)
 		self.movable=True
@@ -39,17 +43,16 @@ class MovingBody(Body):
 			return str(self.id)+" "+str(self.loc)+", ".join(str(x) for x in self._forces)
 
 	def update_force(self,force):
-		for f in self._forces:
-			if(f.id==force.id):
-				f.x=force.x
-				f.y=force.y
-				return
-		self._forces.append(force)
+		self._forces[force.id] = force
+		return
+		
 	def update_state(self,delta_time):
 		'''
 		update the state of itself according to the force list
 		'''
-		sum_force=sum(self._forces,Force(0,0,""))
+		sum_force = Force(0,0,'')
+		for f in self._forces.values():
+			sum_force += f
 		self.acceleration=sum_force/self.mass
 		self.velocity+=self.acceleration * delta_time / 1000
 		self.loc+=self.velocity* delta_time /1000

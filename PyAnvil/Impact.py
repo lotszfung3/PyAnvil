@@ -10,7 +10,8 @@ class Impact:
 		'''
 		for wall in wallList:
 			if(Impact.withinBound(body.loc,wall)):
-				body.velocity=-body.velocity
+				body.velocity.y = -body.velocity.y
+				
 	def withinBound(bodyPoint,wall):
 		'''
 		return 2-tuple to multiply to the
