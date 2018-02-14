@@ -25,7 +25,6 @@ class Impact:
 		'''
 		diff_loc=bodyB.loc-bodyA.loc
 		diff_loc.normalize(magt)
-		print(diff_loc)
 		bodyA.update_force(Force(-diff_loc.x,-diff_loc.y,bodyB.id))
 		bodyB.update_force(Force(diff_loc.x,diff_loc.y,bodyA.id))		
 		

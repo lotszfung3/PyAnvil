@@ -1,14 +1,11 @@
-from PyAnvil import Space,Body,MovingBody,Application,Force
+from PyAnvil import Space,Body,MovingBody,Application,Force,Link
 
 space=Space(gravt=(0,10))
-ball=MovingBody(mass=10,init_vel=(30,0),loc=(200,400),id="a")
-#ball1=MovingBody(mass=10,init_vel=(10,0),loc=(0,300),id="b")
-ground=Body(loc=(500,500),dim=(1000,20))
-wall = Body(loc=(600,480),dim=(100,20), rotate = 20)
+ball=MovingBody(mass=10,init_vel=(0,0),loc=(200,400),id="a")
 space.add_body(ball)
-#space.add_body(ball1)
-space.add_wall(ground)
-space.add_wall(wall)
-#space.add_links((ball,ball1,-100))
+
+block=Body(loc=(200,300),dim=(10,10))
+space.add_body(block)
+space.add_links(Link.ElasticLink(block,ball,magt=100,length=150))
 app=Application(space)
 app.start()

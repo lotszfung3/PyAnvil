@@ -49,6 +49,8 @@ class Vector:
 			sq_rt=sqrt(self.x**2+self.y**2)
 			self.x=mag*self.x/sq_rt
 			self.y=mag*self.y/sq_rt
+	def sq_magnitude(self):
+		return self.x**2+self.y**2
 class Force(Vector):
 	def __init__(self,*args):
 		assert(len(args)==3)

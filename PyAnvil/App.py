@@ -54,7 +54,7 @@ class AppUtil():
 		if(str(body)=="Fixed"):
 			return canvas.create_polygon(*AppUtil.getcoordFromBody(body))
 		else:#moving bodies
-			return canvas.create_oval(*AppUtil.getcoordFromBody(body), fill='red')
+			return canvas.create_oval(*AppUtil.getcoordFromBody(body), )
 	
 	def getcoordFromBody(body):
 		'''
@@ -80,5 +80,7 @@ class AppUtil():
 	def createLineFromBody(canvas,link):
 		return canvas.create_line(*AppUtil.getcoordFromLink(link))
 	def getcoordFromLink(link):
-		return (link[0].loc.x+MARGIN,link[0].loc.y+MARGIN,
-				link[1].loc.x+MARGIN,link[1].loc.y+MARGIN)
+		target=link.target
+		source=link.source
+		return (source.loc.x+MARGIN,source.loc.y+MARGIN,
+				target.loc.x+MARGIN,target.loc.y+MARGIN)
