@@ -1,4 +1,6 @@
 from math import sqrt
+
+
 class Vector:
 	'''
 	force,acceleration,velocity in 2d mode
@@ -50,7 +52,10 @@ class Vector:
 			self.x=mag*self.x/sq_rt
 			self.y=mag*self.y/sq_rt
 	def sq_magnitude(self):
-		return self.x**2+self.y**2
+		return self.x**2+self.y**2		
+	def to_tuple(self):
+		return (self.x, self.y)	
+	
 class Force(Vector):
 	def __init__(self,*args):
 		assert(len(args)==3)

@@ -1,4 +1,5 @@
 from .Vector import Vector,Force
+import numpy as np
 
 class Body:
 	'''
@@ -10,9 +11,26 @@ class Body:
 		self.movable=False
 		self.id=id
 		
-		# Counter-clockwise rotation theta in degree
+		# clockwise rotation theta
+		# Input in degree, stored in radians
 		self.rotate= -rotate
-		
+	
+	def get_coordinates(self):
+		bodyCenter=np.array(self.loc.to_tuple())
+		bodyDim=self.dim
+		theta = self.rotate
+		sin, cos = np.sin, np.cos
+		rotMatrix = np.array([[cos(theta), -sin(theta)],[sin(theta),cos(theta)]])
+
+		ul_x, ul_y = rotMatrix.dot(np.array([-bodyDim.x/2, -bodyDim.y/2])) + bodyCenter
+		ur_x, ur_y = rotMatrix.dot(np.array([bodyDim.x/2, -bodyDim.y/2])) + bodyCenter
+		bl_x, bl_y = rotMatrix.dot(np.array([-bodyDim.x/2, bodyDim.y/2])) + bodyCenter
+		br_x, br_y = rotMatrix.dot(np.array([bodyDim.x/2, bodyDim.y/2])) + bodyCenter
+		if str(self)=="Fixed":
+			return (ul_x,ul_y,ur_x,ur_y, br_x, br_y, bl_x, bl_y)
+		else:
+			return (ul_x,ul_y, br_x, br_y)
+	
 	def __str__(self):
 		return "Fixed"
 	def update_force(self,*args):
