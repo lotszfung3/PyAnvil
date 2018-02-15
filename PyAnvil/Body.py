@@ -46,7 +46,7 @@ class MovingBody(Body):
 		self._forces[force.id] = force
 		return
 		
-	def update_state(self,delta_time):
+	def update_state(self,delta_time,dumping=0.995):
 		'''
 		update the state of itself according to the force list
 		'''
@@ -55,5 +55,11 @@ class MovingBody(Body):
 			sum_force += f
 		self.acceleration=sum_force/self.mass
 		self.velocity+=self.acceleration * delta_time / 1000
+		#self.velocity*=dumping
 		self.loc+=self.velocity* delta_time /1000
 		#print(self.loc)
+	def get_res_force(self):
+		res_Force=Force(0,0,"")
+		for i in self._forces.values():
+			res_Force+=i
+		return res_Force

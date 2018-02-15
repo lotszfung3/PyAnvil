@@ -51,6 +51,14 @@ class Vector:
 			self.y=mag*self.y/sq_rt
 	def sq_magnitude(self):
 		return self.x**2+self.y**2
+	def projection_in(self,b):
+		b_sq_magt=b.sq_magnitude()
+		res_force=b *  ((self.x*b.x+self.y+b.y)/b_sq_magt )
+		return Vector(res_force.x,res_force.y)
+	def perpedicular_in(self,b):
+		b_sq_magt=b.sq_magnitude()
+		res_force=self-  b * ((self.x*b.x+self.y+b.y)/b_sq_magt )
+		return Vector(res_force.x,res_force.y)
 class Force(Vector):
 	def __init__(self,*args):
 		assert(len(args)==3)
@@ -80,4 +88,12 @@ class Force(Vector):
 			return Force(self.x/other,self.y/other,self.id)
 	def __neg__(self):
 		return Force(-self.x,-self.y,self.id)
+	def projection_in(self,b):
+		b_sq_magt=b.sq_magnitude()
+		res_force=b *  ((self.x*b.x+self.y+b.y)/b_sq_magt )
+		return Force(res_force.x,res_force.y,self.id)
+	def perpedicular_in(self,b):
+		b_sq_magt=b.sq_magnitude()
+		res_force=self-  b * ((self.x*b.x+self.y+b.y)/b_sq_magt )
+		return Force(res_force.x,res_force.y,self.id)
 	
