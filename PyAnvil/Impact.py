@@ -3,6 +3,7 @@ import numpy as np
 
 
 MARGIN=5 #offsets in the gui
+
 class Impact:
 	'''
 	class include functions to calculate the impact of collision and other physics stuff
