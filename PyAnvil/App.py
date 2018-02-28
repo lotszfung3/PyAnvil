@@ -1,18 +1,16 @@
 import tkinter as tk
-import numpy as np
 from .Space import Space
+from .Vector import Vector
 
-
-UPDATE_RATE = 50
+UPDATE_RATE = 30
 MARGIN=0 #offsets in the gui
 class Application():
 	def __init__(self,space:Space):
 		self.space=space
 		self.shapeList=[]
-		self.lineList=[]
 		self.setup_tk()
 		self.setup_shape()
-		
+		self.dragging_body=None
 		self.updater()
 	
 	def setup_tk(self):
@@ -20,14 +18,12 @@ class Application():
 		self.root.title("Space")
 		self.canvas=tk.Canvas(self.root,width=1000,height=800)
 		self.canvas.pack()
-		
+		self.canvas.bind ("<Button-1>", self.down)
+		self.canvas.bind ("<ButtonRelease-1>", self.chkup)
+		self.canvas.bind("<B1-Motion>",self.mouseDragged)
 	def setup_shape(self):
 		for body in self.space.bodyList:
 			self.shapeList.append(AppUtil.createShapeFromBody(self.canvas,body))
-		for body in self.space.wallList:
-			AppUtil.createShapeFromBody(self.canvas,body)
-		for link in self.space.links:
-			self.lineList.append(AppUtil.createLineFromBody(self.canvas,link))
 	
 	def start(self):
 		self.root.mainloop()
@@ -40,22 +36,20 @@ class Application():
 		for i,body in enumerate(self.space.bodyList):
 			bodyCenter=body.loc
 			self.canvas.coords(self.shapeList[i],*body.get_coordinates())
-		for i ,link in enumerate(self.space.links):
-			self.canvas.coords(self.lineList[i],*AppUtil.getcoordFromLink(link))
 	def updater(self):
 		self.update_state()
 		self.canvas.after(UPDATE_RATE, self.updater)
-'''
-app=Application(space)
-app.start()
-'''
+	def down(self,event):
+		self.dragging_body=self.space.find(event.x,event.y)
+	def chkup(self,event):
+		self.dragging_body=None
+	def mouseDragged(self,event):
+		if self.dragging_body:
+			self.dragging_body.loc=Vector(event.x,event.y)
+		
 class AppUtil():
 	def createShapeFromBody(canvas,body):
-		if(str(body)=="Fixed"):
-			return canvas.create_polygon(*body.get_coordinates())
-		else:#moving bodies
-			return canvas.create_oval(*body.get_coordinates())
-			
+		return canvas.create_oval(*body.get_coordinates())		
 	def createLineFromBody(canvas,link):
 		return canvas.create_line(*AppUtil.getcoordFromLink(link))
 	def getcoordFromLink(link):
