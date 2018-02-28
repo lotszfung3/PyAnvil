@@ -39,7 +39,7 @@ class Application():
 		self.space.step()
 		for i,body in enumerate(self.space.bodyList):
 			bodyCenter=body.loc
-			self.canvas.coords(self.shapeList[i],*AppUtil.getcoordFromBody(body))
+			self.canvas.coords(self.shapeList[i],*body.get_coordinates())
 		for i ,link in enumerate(self.space.links):
 			self.canvas.coords(self.lineList[i],*AppUtil.getcoordFromLink(link))
 	def updater(self):
@@ -52,31 +52,10 @@ app.start()
 class AppUtil():
 	def createShapeFromBody(canvas,body):
 		if(str(body)=="Fixed"):
-			return canvas.create_polygon(*AppUtil.getcoordFromBody(body))
+			return canvas.create_polygon(*body.get_coordinates())
 		else:#moving bodies
-			return canvas.create_oval(*AppUtil.getcoordFromBody(body), )
-	
-	def getcoordFromBody(body):
-		'''
-		return: a 8-tuple of the bound of the body accepted 
-		        by canvas.create_polygon including offset to represent 4
-				corners of the rectangle
-		'''
-		bodyCenter=np.array((body.loc.x, body.loc.y))
-		bodyDim=body.dim
-		theta = body.rotate/180 * np.pi
-		sin, cos = np.sin, np.cos
-		rotMat = np.array([[cos(theta), -sin(theta)],[sin(theta),cos(theta)]])
-
-		ul_x, ul_y = rotMat.dot(np.array([-bodyDim.x/2+MARGIN, -bodyDim.y/2+MARGIN])) + bodyCenter
-		ur_x, ur_y = rotMat.dot(np.array([bodyDim.x/2+MARGIN, -bodyDim.y/2+MARGIN])) + bodyCenter
-		bl_x, bl_y = rotMat.dot(np.array([-bodyDim.x/2+MARGIN, bodyDim.y/2+MARGIN])) + bodyCenter
-		br_x, br_y = rotMat.dot(np.array([bodyDim.x/2+MARGIN, bodyDim.y/2+MARGIN])) + bodyCenter
-		if str(body)=="Fixed":
-			return (ul_x,ul_y,ur_x,ur_y, br_x, br_y, bl_x, bl_y)
-		else:
-			return (ul_x,ul_y, br_x, br_y)
-		
+			return canvas.create_oval(*body.get_coordinates())
+			
 	def createLineFromBody(canvas,link):
 		return canvas.create_line(*AppUtil.getcoordFromLink(link))
 	def getcoordFromLink(link):
