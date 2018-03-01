@@ -1,4 +1,4 @@
-from .Body import Body
+from .Body import Body, GroupBody
 from .Vector import Vector
 from typing import List
 from time import sleep
@@ -9,7 +9,7 @@ class Space:
 	'''
 	def __init__(self,bodyList=[],delta_time=30):
 		self.bodyList=bodyList
-		self.force_list=[]
+		self.groupList={}
 		self.delta_time=delta_time
 	def __str__(self):
 		bodyStr="Bodies:\n"+"\n".join(str(x) for x in self.bodyList) if len(self.bodyList)>0 else "No objects"
@@ -25,17 +25,17 @@ class Space:
 		for a in self.bodyList:
 			for b in self.bodyList:
 				if (a!=b):
-					loc_diff=b.loc-a.loc
+					loc_diff=b.loc+b.velocity-a.loc-a.velocity
 					if(loc_diff.x==0 and loc_diff.y==0):
-						loc_diff=Vector.get_a_vector()
+						loc_diff=Vector.get_a_vector().to_magn(5)
 					if (loc_diff.sq_magn()<=(a.mass+b.mass)**2):
-						b.velocity=loc_diff.to_magn(1)
-						a.velocity=-loc_diff.to_magn(1)
+						b.velocity=loc_diff.to_magn(20)
+						a.velocity=-loc_diff.to_magn(20)
+			
 					
 	def compute_vel(self,rate):
 		for b in self.bodyList:
-			b.loc+=b.velocity
-			b.velocity=0
+			b.compute_loc()
 	def step(self,period=None):
 		'''
 		Get the space after period ms
@@ -60,6 +60,8 @@ class Space:
 		for b in bodies:
 			assert(isinstance(b,Body))
 			self.bodyList.append(b)
+			if(b.group_id not in self.groupList):
+				self.groupList[b.group_id]=GroupBody(b.group_id)
 	def find(self,x,y):
 		'''
 		find body with bound including (x,y)
